@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ukraine_alerts/features/alerts/presentation/widgets/region_dropdown.dart';
 
 class RegionAlertsScreen extends StatelessWidget {
   const RegionAlertsScreen({super.key});
@@ -9,8 +10,13 @@ class RegionAlertsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Region Alerts'),
       ),
-      body: Center(
-        child: const Text('Region Alerts Screen'),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: RegionDropdown(
+          onSelected: (region) {
+            debugPrint(region?.label ?? 'Регіон не вибрано');
+          },
+        ),
       ),
     );
   }
