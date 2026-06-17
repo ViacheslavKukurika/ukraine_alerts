@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ukraine_alerts/features/alerts/data/models/air_raid_status.dart';
+import 'package:ukraine_alerts/features/alerts/presentation/widgets/alert_status_card.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/widgets/region_dropdown.dart';
 
 class RegionAlertsScreen extends StatelessWidget {
@@ -12,10 +14,16 @@ class RegionAlertsScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(16),
-        child: RegionDropdown(
-          onSelected: (region) {
-            debugPrint(region?.label ?? 'Регіон не вибрано');
-          },
+        child: Column(
+          children: [
+            RegionDropdown(
+              onSelected: (region) {
+                debugPrint(region?.label ?? 'Регіон не вибрано');
+              },
+            ),
+            SizedBox(height: 24),
+            AlertStatusCard(status: AirRaidStatus.inactive),
+          ],
         ),
       ),
     );
