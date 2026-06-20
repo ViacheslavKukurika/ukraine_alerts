@@ -27,12 +27,15 @@ class RegionAlertState extends Equatable {
     RequestStatus? requestStatus,
     AirRaidStatus? airRaidStatus,
     String? errorMessage,
+    bool clearErrorMessage = false,
   }) {
     return RegionAlertState(
       selectedRegion: selectedRegion ?? this.selectedRegion,
       requestStatus: requestStatus ?? this.requestStatus,
       airRaidStatus: airRaidStatus ?? this.airRaidStatus,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: clearErrorMessage
+          ? null
+          : errorMessage ?? this.errorMessage,
     );
   }
 

@@ -2,10 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ukraine_alerts/features/alerts/data/models/air_raid_status.dart';
 import 'package:ukraine_alerts/features/alerts/data/models/region.dart';
 import 'package:ukraine_alerts/features/alerts/data/models/request_status.dart';
+import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/region_alert_state.dart';
 
 class RegionAlertCubit extends Cubit<RegionAlertState> {
-  RegionAlertCubit() : super(const RegionAlertState.initial());
+  RegionAlertCubit(this._alertsRepository)
+    : super(const RegionAlertState.initial());
+
+  final AlertsRepository _alertsRepository;
 
   Future<void> selectRegion(Region region) async {
     emit(
@@ -13,23 +17,32 @@ class RegionAlertCubit extends Cubit<RegionAlertState> {
         selectedRegion: region,
         requestStatus: RequestStatus.loading,
         airRaidStatus: AirRaidStatus.unknown,
+        clearErrorMessage: true,
       ),
     );
 
-    await Future.delayed(const Duration(milliseconds: 700));
+    try {
+      final airRaidStatus = await _alertsRepository.getRegionAirRaidStatus(
+        region.uid,
+      );
 
-    final mockStatus = switch (region.uid % 3) {
-      0 => AirRaidStatus.active,
-      1 => AirRaidStatus.partial,
-      _ => AirRaidStatus.inactive,
-    };
-
-    emit(
-      state.copyWith(
-        selectedRegion: region,
-        requestStatus: RequestStatus.success,
-        airRaidStatus: mockStatus,
-      ),
-    );
+      emit(
+        state.copyWith(
+          selectedRegion: region,
+          requestStatus: RequestStatus.success,
+          airRaidStatus: airRaidStatus,
+          clearErrorMessage: true,
+        ),
+      );
+    } catch (error) {
+      emit(
+        state.copyWith(
+          selectedRegion: region,
+          requestStatus: RequestStatus.failure,
+          airRaidStatus: AirRaidStatus.unknown,
+          errorMessage: 'Не вдалося отримати статус тривоги',
+        ),
+      );
+    }
   }
 }
