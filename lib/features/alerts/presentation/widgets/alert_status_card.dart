@@ -20,20 +20,26 @@ class AlertStatusCard extends StatelessWidget {
       AirRaidStatus.inactive => Colors.greenAccent,
       AirRaidStatus.unknown => Colors.grey,
     };
-    return Container(
+    return AnimatedContainer(
+      duration:  const Duration(milliseconds: 350),
+      curve: Curves.easeInOut,
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Text(
-        statusText,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 350),
+        child: Text(          
+          statusText,
+          key: ValueKey(statusText),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
       ),
     );

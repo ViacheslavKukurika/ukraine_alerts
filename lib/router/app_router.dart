@@ -1,4 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ukraine_alerts/features/alerts/presentation/cubit/region_alert_cubit.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/screens/alerts_map_screen.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/screens/home_screen.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/screens/region_alerts_screen.dart';
@@ -21,7 +23,10 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutesPaths.regionAlerts,
         name: AppRoutesNames.regionAlerts,
-        builder: (context, state) => const RegionAlertsScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => RegionAlertCubit(),
+          child: const RegionAlertsScreen(),
+        ),
       ),
     ],
   );

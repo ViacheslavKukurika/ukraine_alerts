@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ukraine_alerts/features/alerts/data/models/air_raid_status.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ukraine_alerts/features/alerts/data/models/request_status.dart';
+import 'package:ukraine_alerts/features/alerts/presentation/cubit/region_alert_cubit.dart';
+import 'package:ukraine_alerts/features/alerts/presentation/cubit/region_alert_state.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/widgets/alert_status_card.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/widgets/region_dropdown.dart';
 
@@ -13,16 +16,39 @@ class RegionAlertsScreen extends StatelessWidget {
         title: const Text('Region Alerts'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             RegionDropdown(
               onSelected: (region) {
-                debugPrint(region?.label ?? 'Регіон не вибрано');
+                if (region == null) {
+                  return;
+                }
+                context.read<RegionAlertCubit>().selectRegion(region);
               },
             ),
-            SizedBox(height: 24),
-            AlertStatusCard(status: AirRaidStatus.inactive),
+            const SizedBox(height: 24),
+            BlocBuilder<RegionAlertCubit, RegionAlertState>(
+              builder: (context, state) {
+                final selectedRegion = state.selectedRegion;
+
+                return Column(
+                  children: [
+                    if (selectedRegion != null) ...[
+                      Text('Обрано: ${selectedRegion.label}'),
+                      const SizedBox(height: 16),
+                    ],
+
+                    if (state.requestStatus == RequestStatus.loading) ...[
+                      const CircularProgressIndicator(),
+                      const SizedBox(height: 16),
+                    ],
+
+                    AlertStatusCard(status: state.airRaidStatus),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
