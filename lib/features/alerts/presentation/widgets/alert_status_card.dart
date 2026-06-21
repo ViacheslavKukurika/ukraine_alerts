@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ukraine_alerts/features/alerts/data/models/air_raid_status.dart';
+import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 
 class AlertStatusCard extends StatelessWidget {
   const AlertStatusCard({required this.status, super.key});

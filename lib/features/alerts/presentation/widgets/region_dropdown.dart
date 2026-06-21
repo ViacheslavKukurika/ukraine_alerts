@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ukraine_alerts/features/alerts/data/models/region.dart';
+import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
 
 class RegionDropdown extends StatelessWidget {
   const RegionDropdown({

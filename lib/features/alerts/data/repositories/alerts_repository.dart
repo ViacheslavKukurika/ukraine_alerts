@@ -1,5 +1,5 @@
 import 'package:ukraine_alerts/features/alerts/data/api/alerts_api_service.dart';
-import 'package:ukraine_alerts/features/alerts/data/models/air_raid_status.dart';
+import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 
 class AlertsRepository {
   AlertsRepository(this._apiService);

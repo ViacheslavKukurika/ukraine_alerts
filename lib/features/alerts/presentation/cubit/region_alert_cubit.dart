@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ukraine_alerts/features/alerts/data/models/air_raid_status.dart';
-import 'package:ukraine_alerts/features/alerts/data/models/region.dart';
-import 'package:ukraine_alerts/features/alerts/data/models/request_status.dart';
+import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
+import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
 import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/region_alert_state.dart';
+import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
 
 class RegionAlertCubit extends Cubit<RegionAlertState> {
   RegionAlertCubit(this._alertsRepository)
