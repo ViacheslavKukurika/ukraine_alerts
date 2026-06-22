@@ -30,6 +30,7 @@ class AlertsApiService {
     final response = await _dio.get<Map<String, dynamic>>(
       '/v1/alerts/active.json',
     );
+
     final data = response.data;
 
     if (data == null) {
