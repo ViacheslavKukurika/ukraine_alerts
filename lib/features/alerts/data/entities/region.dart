@@ -1,3 +1,5 @@
+// Дякую за наданий код)) Я зрозумів, що таке "складний enum"
+
 enum Region {
   khmelnytskyi(3, 'Хмельницька область'),
   vinnytsia(4, 'Вінницька область'),
@@ -25,7 +27,8 @@ enum Region {
   donetsk(28, 'Донецька область'),
   crimea(29, 'Автономна Республіка Крим'),
   sevastopol(30, 'м. Севастополь'),
-  kyivCity(31, 'м. Київ');
+  kyivCity(31, 'м. Київ')
+  ;
 
   const Region(this.uid, this.label);
 

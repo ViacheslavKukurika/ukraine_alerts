@@ -1,3 +1,9 @@
+/*
+  Клас (його об'єкт) ActiveAlertsResponseDto являє собою увесь зовнішній об'єкт
+DTO. Він приймає у себе список об'єктів іншого класу — AlertDto (одна з основ
+ООП — композиція).
+*/
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ukraine_alerts/features/alerts/data/dto/alert_dto.dart';
 

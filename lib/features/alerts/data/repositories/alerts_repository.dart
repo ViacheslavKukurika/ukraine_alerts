@@ -1,3 +1,12 @@
+/*
+  Репозиторій організовує послідовність:
+  
+  1) API service (запит до бекенду);
+  2) DTO;
+  3) mapper;
+  4) Entity;
+*/
+
 import 'package:ukraine_alerts/features/alerts/data/api/alerts_api_service.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/active_alert.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
@@ -23,6 +32,13 @@ class AlertsRepository {
   Future<List<ActiveAlert>> getActiveAlerts() async {
     final responseDto = await _apiService.getActiveAlerts();
     final alertDtos = responseDto.alerts ?? [];
+
+    /*
+      Використовуємо Set, бо може бути, наприклад, що API поверне декілька 
+     активних тривог в межах області: район, місто, область. В такому випадку
+     кожен запис може перетворитися на Region.sumy. Set же зберігає
+     лише унікальні значення, автоматично видаляючи дублікати.
+    */
 
     final activeRegions = <Region>{};
 

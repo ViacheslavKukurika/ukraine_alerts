@@ -3,9 +3,19 @@ import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_reposito
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_state.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
 
+/*
+  Цей Cubit керує екраном конкретного регіону. Фабула:
+
+    1) Користувач обрав регіон;
+    2) Cubit emit loading;
+    3) Repository робить запит;
+    4) Якщо успіх — success;
+    5) Якщо помилка — failure.
+*/
+
 class AlertsMapCubit extends Cubit<AlertsMapState> {
   AlertsMapCubit(this._alertsRepository)
-      : super(const AlertsMapState.initial());
+    : super(const AlertsMapState.initial());
 
   final AlertsRepository _alertsRepository;
 
@@ -23,6 +33,7 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
       emit(
         state.copyWith(
           requestStatus: RequestStatus.success,
+          // захист список у State від випадкової зміни (add, clear...):
           activeAlerts: List.unmodifiable(activeAlerts),
           clearErrorMessage: true,
         ),

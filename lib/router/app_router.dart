@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ukraine_alerts/core/network/dio_client.dart';
 import 'package:ukraine_alerts/features/alerts/data/api/alerts_api_service.dart';
 import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
+import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_cubit.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/region_alert_cubit.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/screens/alerts_map_screen.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/screens/home_screen.dart';
@@ -21,7 +22,15 @@ abstract final class AppRouter {
       GoRoute(
         path: AppRoutesPaths.alertsMap,
         name: AppRoutesNames.alertsMap,
-        builder: (context, state) => const AlertsMapScreen(),
+        builder: (context, state) {
+          final dio = DioClient.create();
+          final apiService = AlertsApiService(dio);
+          final repository = AlertsRepository(apiService);
+          return BlocProvider(
+            create: (_) => AlertsMapCubit(repository)..loadActiveAlerts(),
+            child: const AlertsMapScreen(),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutesPaths.regionAlerts,
@@ -39,3 +48,18 @@ abstract final class AppRouter {
     ],
   );
 }
+
+/*
+  Для екрану регіону тут, у app_router, ми встановлюємо залежності:
+
+  final dio = DioClient.create();
+  final apiService = AlertsApiService(dio);
+  final repository = AlertsRepository(apiService);
+
+  Потім створюємо вже наш BlocProvide. В цілому спостерігається ланцюг 
+ залежностей:
+
+  Dio → AlertsApiService → AlertsRepository → RegionAlertCubit → 
+    → RegionAlertsScreen.
+  Спостерігається певна модульність, де кожен рівень відповідає за своє.
+*/

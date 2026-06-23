@@ -1,3 +1,7 @@
+/*
+  Віджет, який отримує AirRaidStatus і на основі цих даних через switch
+ обирає текст і колір в UI.
+*/
 import 'package:flutter/material.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 

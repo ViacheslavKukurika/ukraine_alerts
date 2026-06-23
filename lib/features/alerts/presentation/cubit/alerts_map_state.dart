@@ -19,6 +19,11 @@ class AlertsMapState extends Equatable {
   final List<ActiveAlert> activeAlerts;
   final String? errorMessage;
 
+  /*
+    Гетер activeRegions здійснює перетворення (наприклад):
+      ActiveAlert(region: Region.sumy) => Region.sumy
+  */
+
   Set<Region> get activeRegions =>
       activeAlerts.map((alert) => alert.region).toSet();
 
