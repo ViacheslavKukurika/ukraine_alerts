@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_state.dart';
@@ -38,7 +39,9 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
           clearErrorMessage: true,
         ),
       );
-    } catch (_) {
+    } catch (error, stackTrace) {
+      debugPrint('loadActiveAlerts failed: $error');
+      debugPrintStack(stackTrace: stackTrace);
       emit(
         state.copyWith(
           requestStatus: RequestStatus.failure,

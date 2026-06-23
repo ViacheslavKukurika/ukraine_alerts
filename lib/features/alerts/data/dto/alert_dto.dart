@@ -19,6 +19,21 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'alert_dto.g.dart';
 
+int? _uidFromJson(Object? value) {
+  if (value is int) {
+    return value;
+  }
+
+  if (value is num) {
+    return value.toInt();
+  }
+
+  if (value is String) {
+    return int.tryParse(value.trim());
+  }
+  return null;
+}
+
 @JsonSerializable(createToJson: false)
 class AlertDto {
   const AlertDto({
@@ -34,11 +49,19 @@ class AlertDto {
   @JsonKey(name: 'alert_type')
   final String? alertType;
 
-  @JsonKey(name: 'location_uid')
-  final String? locationUid;
+  @JsonKey(
+  name: 'location_uid',
+  fromJson: _uidFromJson,
+  )
+  final int? locationUid;
+  
 
-  @JsonKey(name: 'location_oblast_uid')
-  final String? locationOblastUid;
+  @JsonKey(
+    name: 'location_oblast_uid',
+    fromJson: _uidFromJson,
+    )
+    final int? locationOblastUid;
+  
 
   @JsonKey(name: 'location_type')
   final String? locationType;
