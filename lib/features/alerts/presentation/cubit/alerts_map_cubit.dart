@@ -1,18 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_state.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
-
-/*
-  Цей Cubit керує екраном конкретного регіону. Фабула:
-
-    1) Користувач обрав регіон;
-    2) Cubit emit loading;
-    3) Repository робить запит;
-    4) Якщо успіх — success;
-    5) Якщо помилка — failure.
-*/
 
 class AlertsMapCubit extends Cubit<AlertsMapState> {
   AlertsMapCubit(this._alertsRepository)
@@ -20,7 +10,7 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
 
   final AlertsRepository _alertsRepository;
 
-  Future<void> loadActiveAlerts() async {
+  Future<void> loadAirRaidStatuses() async {
     emit(
       state.copyWith(
         requestStatus: RequestStatus.loading,
@@ -29,24 +19,25 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
     );
 
     try {
-      final activeAlerts = await _alertsRepository.getActiveAlerts();
+      final regionStatuses = await _alertsRepository
+          .getAirRaidStatusesByOblast();
 
       emit(
         state.copyWith(
           requestStatus: RequestStatus.success,
-          // захист список у State від випадкової зміни (add, clear...):
-          activeAlerts: List.unmodifiable(activeAlerts),
+          regionStatuses: Map.unmodifiable(regionStatuses),
           clearErrorMessage: true,
         ),
       );
     } catch (error, stackTrace) {
-      debugPrint('loadActiveAlerts failed: $error');
+      debugPrint('loadAirRaidStatuses failed: $error');
       debugPrintStack(stackTrace: stackTrace);
+
       emit(
         state.copyWith(
           requestStatus: RequestStatus.failure,
-          activeAlerts: const [],
-          errorMessage: 'Не вдалося завантажити активні тривоги',
+          regionStatuses: const {},
+          errorMessage: 'Не вдалося завантажити карту тривог',
         ),
       );
     }

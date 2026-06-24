@@ -27,7 +27,7 @@ abstract final class AppRouter {
           final apiService = AlertsApiService(dio);
           final repository = AlertsRepository(apiService);
           return BlocProvider(
-            create: (_) => AlertsMapCubit(repository)..loadActiveAlerts(),
+            create: (_) => AlertsMapCubit(repository)..loadAirRaidStatuses(),
             child: const AlertsMapScreen(),
           );
         },

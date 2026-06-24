@@ -1,41 +1,37 @@
 import 'package:equatable/equatable.dart';
-import 'package:ukraine_alerts/features/alerts/data/entities/active_alert.dart';
+import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
 
 class AlertsMapState extends Equatable {
   const AlertsMapState({
     required this.requestStatus,
-    required this.activeAlerts,
+    required this.regionStatuses,
     this.errorMessage,
   });
 
   const AlertsMapState.initial()
     : requestStatus = RequestStatus.initial,
-      activeAlerts = const [],
+      regionStatuses = const {},
       errorMessage = null;
 
   final RequestStatus requestStatus;
-  final List<ActiveAlert> activeAlerts;
+  final Map<Region, AirRaidStatus> regionStatuses;
   final String? errorMessage;
 
-  /*
-    Гетер activeRegions здійснює перетворення (наприклад):
-      ActiveAlert(region: Region.sumy) => Region.sumy
-  */
-
-  Set<Region> get activeRegions =>
-      activeAlerts.map((alert) => alert.region).toSet();
+  AirRaidStatus statusFor(Region region) {
+    return regionStatuses[region] ?? AirRaidStatus.unknown;
+  }
 
   AlertsMapState copyWith({
     RequestStatus? requestStatus,
-    List<ActiveAlert>? activeAlerts,
+    Map<Region, AirRaidStatus>? regionStatuses,
     String? errorMessage,
     bool clearErrorMessage = false,
   }) {
     return AlertsMapState(
       requestStatus: requestStatus ?? this.requestStatus,
-      activeAlerts: activeAlerts ?? this.activeAlerts,
+      regionStatuses: regionStatuses ?? this.regionStatuses,
       errorMessage: clearErrorMessage
           ? null
           : errorMessage ?? this.errorMessage,
@@ -45,7 +41,7 @@ class AlertsMapState extends Equatable {
   @override
   List<Object?> get props => [
     requestStatus,
-    activeAlerts,
+    regionStatuses,
     errorMessage,
   ];
 }

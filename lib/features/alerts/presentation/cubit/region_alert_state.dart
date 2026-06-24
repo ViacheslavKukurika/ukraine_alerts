@@ -3,14 +3,14 @@ import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dar
 import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
 
-/*
+/*-------------------------------------------------------------------
   State повна інформаційна картка екрану у певний момент часу. Це як змінна, яку
  контролює і прокидує вниз inherited-widget, але це не просто змінна, а повно-
  цінний об'єкт класу.
 
     Equatable дозволяє порівнювати State за значеннями полів, а не за адресою
   об’єкта.
-*/
+-------------------------------------------------------------------*/
 
 class RegionAlertState extends Equatable {
   const RegionAlertState({

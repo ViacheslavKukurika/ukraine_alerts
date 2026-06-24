@@ -1,7 +1,7 @@
-/*
+/*-------------------------------------------------------------------
   Це посередник між застосунком і сервером. Його задача:
   Зробити конкретний HTTP-запит і повернути результат (сирий).
-*/
+-------------------------------------------------------------------*/
 
 import 'dart:convert';
 import 'package:dio/dio.dart';
@@ -12,7 +12,7 @@ class AlertsApiService {
 
   final Dio _dio;
 
-  /*
+  /*-------------------------------------------------------------------
     Метод "getRegionAirRaidStatus" повертає нам статус одного, обраного нами
   конкретного регіону. Згідно документації, API повертає нам JSON-рядок типу:
     - "N" (немає тривоги);
@@ -27,7 +27,7 @@ class AlertsApiService {
   Потім jsonDecode(rawBody) перетворює JSON-текст у Dart-рядок. Типу:
 
     "N" => N. 
-  */
+  -------------------------------------------------------------------*/
 
   Future<String> getRegionAirRaidStatus(int uid) async {
     final response = await _dio.get<String>(
@@ -48,12 +48,12 @@ class AlertsApiService {
     return decodeBody;
   }
 
-/*
+  /*-------------------------------------------------------------------
   Метод getActiveAlerts повертає нам список усіх активних тривог. Тут API
 повертає нам вже не рядок, а цілий JSON-об'єкт. Змінна "response" — має тип 
 "Map<String, dynamic>", тобто Dio підкапотно автоматично перетворює JSON у
 Mapу. 
-*/
+-------------------------------------------------------------------*/
 
   Future<ActiveAlertsResponseDto> getActiveAlerts() async {
     final response = await _dio.get<Map<String, dynamic>>(
@@ -68,5 +68,25 @@ Mapу.
       );
     }
     return ActiveAlertsResponseDto.fromJson(data);
+  }
+
+  Future<String> getAirRaidStatusesByOblast() async {
+    final response = await _dio.get<String>(
+      '/v1/iot/active_air_raid_alerts_by_oblast.json',
+      options: Options(
+        responseType: ResponseType.plain,
+      ),
+    );
+
+    final rawBody = response.data ?? '';
+    final decodedBody = jsonDecode(rawBody);
+
+    if (decodedBody is! String) {
+      throw const FormatException(
+        'Unexpected oblast alert statuses response format',
+      );
+    }
+
+    return decodedBody;
   }
 }

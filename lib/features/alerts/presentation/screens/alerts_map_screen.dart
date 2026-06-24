@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_cubit.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_state.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
+import 'package:ukraine_alerts/features/alerts/presentation/widgets/ukraine_alerts_map.dart';
 
 class AlertsMapScreen extends StatelessWidget {
   const AlertsMapScreen({super.key});
@@ -36,7 +37,7 @@ class AlertsMapScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        context.read<AlertsMapCubit>().loadActiveAlerts();
+                        context.read<AlertsMapCubit>().loadAirRaidStatuses();
                       },
                       child: const Text('Спробувати ще раз'),
                     ),
@@ -45,34 +46,21 @@ class AlertsMapScreen extends StatelessWidget {
               ),
             );
           }
-          if (state.activeAlerts.isEmpty) {
-            return const Center(
-              child: Text(
-                'Активних повітряних тривог немає',
-                textAlign: TextAlign.center,
-              ),
-            );
-          }
-          return ListView.separated(
-            padding: const EdgeInsets.all(16),
-            itemCount: state.activeAlerts.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 8),
-            itemBuilder: (context, index) {
-              final activeAlert = state.activeAlerts[index];
-
-              return ListTile(
-                leading: const Icon(
-                  Icons.warning_amber_rounded,
-                ),
-                title: Text(activeAlert.region.label),
-                subtitle: const Text(
-                  'Активна повітряна тривога',
-                ),
-              );
-            },
+          
+          return UkraineAlertsMap(
+            regionStatuses: state.regionStatuses,
           );
         },
       ),
     );
   }
 }
+
+/*-------------------------------------------------------------------
+  Фабула:
+
+  AlertsMapState (стан Cubit-у) → activeAlerts (змінна у самому Cubit) → 
+   →  activeRegions (Set регіонів, де є активна повітряна тривога) →
+    → UkraineAlertsMap (наш віджет із картою + оверлеї) → 
+     → AnimatedOpacity для кожної області. 
+-------------------------------------------------------------------*/
