@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
@@ -9,8 +11,13 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
     : super(const AlertsMapState.initial());
 
   final AlertsRepository _alertsRepository;
+  Timer? _refreshTimer;
 
   Future<void> loadAirRaidStatuses() async {
+    if (state.requestStatus == RequestStatus.loading) {
+      return;
+    }
+    
     emit(
       state.copyWith(
         requestStatus: RequestStatus.loading,
@@ -36,10 +43,26 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
       emit(
         state.copyWith(
           requestStatus: RequestStatus.failure,
-          regionStatuses: const {},
           errorMessage: 'Не вдалося завантажити карту тривог',
         ),
       );
     }
+  }
+
+  void startAutoRefresh() {
+    _refreshTimer?.cancel();
+
+    _refreshTimer = Timer.periodic(
+      const Duration(minutes: 1),
+      (_) {
+        loadAirRaidStatuses();
+      },
+    );
+  }
+
+  @override
+  Future<void> close() {
+    _refreshTimer?.cancel();
+    return super.close();
   }
 }

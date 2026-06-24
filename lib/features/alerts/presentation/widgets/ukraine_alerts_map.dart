@@ -15,66 +15,52 @@ class UkraineAlertsMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: InteractiveViewer(
-        minScale: 1,
-        maxScale: 4,
-        child: Center(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Image.asset(
-                _baseMapPath,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  debugPrint(
-                    'Base map load failed: $_baseMapPath\n$error',
-                  );
+    return InteractiveViewer(
+      minScale: 1,
+      maxScale: 4,
+      child: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset(
+              _baseMapPath,
+              fit: BoxFit.contain,
+            ),
 
-                  return const Center(
-                    child: Text(
-                      'Не вдалося завантажити карту',
-                    ),
-                  );
-                },
-              ),
+            for (final entry in regionStatuses.entries)
+              if (entry.value == AirRaidStatus.active ||
+                  entry.value == AirRaidStatus.partial)
+                Positioned.fill(
+                  child: IgnorePointer(
+                    child: AnimatedOpacity(
+                      key: ValueKey(entry.key),
+                      opacity: _opacityFor(entry.value),
+                      duration: const Duration(
+                        milliseconds: 350,
+                      ),
+                      curve: Curves.easeInOut,
+                      child: Image.asset(
+                        entry.key.overlayAssetPath,
+                        fit: BoxFit.contain,
+                        gaplessPlayback: true,
+                        errorBuilder:
+                            (
+                              context,
+                              error,
+                              stackTrace,
+                            ) {
+                              debugPrint(
+                                'Overlay load failed: '
+                                '${entry.key.overlayAssetPath}\n$error',
+                              );
 
-              for (final entry in regionStatuses.entries)
-                if (entry.value == AirRaidStatus.active ||
-                    entry.value == AirRaidStatus.partial)
-                  Positioned.fill(
-                    child: IgnorePointer(
-                      child: AnimatedOpacity(
-                        key: ValueKey(entry.key),
-                        opacity: _opacityFor(entry.value),
-                        duration: const Duration(
-                          milliseconds: 350,
-                        ),
-                        curve: Curves.easeInOut,
-                        child: Image.asset(
-                          entry.key.overlayAssetPath,
-                          fit: BoxFit.contain,
-                          gaplessPlayback: true,
-                          errorBuilder:
-                              (
-                                context,
-                                error,
-                                stackTrace,
-                              ) {
-                                debugPrint(
-                                  'Overlay load failed: '
-                                  '${entry.key.overlayAssetPath}\n$error',
-                                );
-
-                                return const SizedBox.shrink();
-                              },
-                        ),
+                              return const SizedBox.shrink();
+                            },
                       ),
                     ),
                   ),
-            ],
-          ),
+                ),
+          ],
         ),
       ),
     );

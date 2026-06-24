@@ -39,6 +39,7 @@ dependencies:
   go_router: ^17.3.0
   json_annotation: ^4.12.0
   equatable: ^2.0.8
+  google_fonts: ^8.1.0
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,7 @@ flutter:
     - assets/images/map/
     - assets/images/map/overlays/
     - assets/images/region/
+    - assets/images/icons/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
