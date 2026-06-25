@@ -2,7 +2,7 @@
   У цьому файлі немає секретних даних, однак у нас тут є спосіб отримати
 секретні дані (токен):
   secrets.json → --dart-define-from-file → String.fromEnvironment →
-→ AppConfig.alertsApiToken
+  → AppConfig.alertsApiToken
   Основна логіка: токен не записаний напряму у код й не потрапляє у Git.
   Також тут для зручності базова URL-а записана у змінну, щоб було зручніше
   користуватися (як named-шляхи у GoRouter). 

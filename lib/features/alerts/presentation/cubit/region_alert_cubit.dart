@@ -34,7 +34,7 @@ class RegionAlertCubit extends Cubit<RegionAlertState> {
           clearErrorMessage: true,
         ),
       );
-    } catch (error) {
+    } catch (_) {
       emit(
         state.copyWith(
           selectedRegion: region,

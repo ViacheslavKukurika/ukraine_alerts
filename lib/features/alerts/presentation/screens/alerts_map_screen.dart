@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_cubit.dart';
@@ -15,6 +17,7 @@ const Color _alertsMapBackgroundColor = Color(0xFFA0D6F5);
 const Color _alertCardColor = Color(0xFFC4E6F9);
 
 const String _alertIconPath = 'assets/images/icons/alert_triangle.png';
+const String _refreshIconPath = 'assets/images/icons/circular_arrow.png';
 
 class AlertsMapScreen extends StatelessWidget {
   const AlertsMapScreen({super.key});
@@ -24,7 +27,25 @@ class AlertsMapScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: _alertsMapBackgroundColor,
       appBar: AppBar(
-        title: const Text('Карта тривог'),
+        leading: IconButton(
+          tooltip: 'Назад',
+          onPressed: () {
+            context.pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 24,
+          ),
+        ),
+        title: Text(
+          'Alerts Map',
+          style: GoogleFonts.kameron(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xFF1E1E1E),
+          ),
+        ),
+        centerTitle: true,
         backgroundColor: _alertsMapAppBarColor,
         foregroundColor: Colors.black87,
         surfaceTintColor: Colors.transparent,
@@ -40,6 +61,8 @@ class AlertsMapScreen extends StatelessWidget {
                 context: context,
                 builder: (dialogContext) {
                   return AlertDialog(
+                    backgroundColor: const Color(0xFF9ED6F5),
+                    surfaceTintColor: Colors.transparent,
                     title: const Text('Позначення'),
                     content: const AlertsMapLegend(),
                     actions: [
@@ -55,6 +78,7 @@ class AlertsMapScreen extends StatelessWidget {
               );
             },
           ),
+
           BlocBuilder<AlertsMapCubit, AlertsMapState>(
             buildWhen: (previous, current) {
               return previous.regionStatuses != current.regionStatuses;
@@ -77,7 +101,10 @@ class AlertsMapScreen extends StatelessWidget {
                           strokeWidth: 2,
                         ),
                       )
-                    : const Icon(Icons.refresh),
+                    : const ImageIcon(
+                        AssetImage(_refreshIconPath),
+                        size: 20,
+                      ),
               );
             },
           ),
@@ -150,11 +177,6 @@ class AlertsMapScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text(
-                  'Активні тривоги',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 12),
                 if (alertEntries.isEmpty)
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 24),

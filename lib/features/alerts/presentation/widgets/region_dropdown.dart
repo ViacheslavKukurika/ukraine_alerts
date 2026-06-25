@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
 
 class RegionDropdown extends StatelessWidget {
@@ -10,6 +11,8 @@ class RegionDropdown extends StatelessWidget {
 
   final ValueChanged<Region?>? onSelected;
   final Region? initialSelection;
+
+  static const String _searchIconPath = 'assets/images/icons/icons_search.png';
 
   static const _entryStyle = ButtonStyle(
     foregroundColor: WidgetStatePropertyAll(Colors.black87),
@@ -25,17 +28,42 @@ class RegionDropdown extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: DropdownMenu<Region>(
+        // розтягує dropdown до ширини батьківського SizedBox (для центрування):
+        expandedInsets: EdgeInsets.zero,
+        // щоб список не починався від самого верху, а був більш зручно розташ:
+        menuHeight: 280,
+        // зміщення списку вниз на 8 логічних пікселів:
+        alignmentOffset: const Offset(0, 8),
         initialSelection: initialSelection,
         enableSearch: true,
         enableFilter: true,
         requestFocusOnTap: true,
         hintText: 'Оберіть місто або регіон',
-        leadingIcon: const Icon(Icons.search, color: Color(0xFF8BB8D6)),
-        textStyle: const TextStyle(fontSize: 16, color: Colors.black87),
+        leadingIcon: SizedBox(
+          width: 48,
+          height: 48,
+          child: Center(
+            child: Image.asset(
+              _searchIconPath,
+              width: 21,
+              height: 21,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+        textStyle: GoogleFonts.kameron(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: const Color(0xFF5D5D5D),
+        ),
         onSelected: onSelected,
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: Colors.white.withValues(alpha: 0.7),
+          prefixIconConstraints: const BoxConstraints(
+            minWidth: 48,
+            minHeight: 48,
+          ),
           border: border,
           enabledBorder: border.copyWith(
             borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.8)),
@@ -47,9 +75,10 @@ class RegionDropdown extends StatelessWidget {
             horizontal: 16,
             vertical: 14,
           ),
-          hintStyle: TextStyle(
-            color: Colors.black.withValues(alpha: 0.4),
-            fontSize: 16,
+          hintStyle: GoogleFonts.kameron(
+            color: const Color(0xFF5D5D5D),
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
           ),
         ),
         menuStyle: MenuStyle(

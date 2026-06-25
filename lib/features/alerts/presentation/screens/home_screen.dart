@@ -15,18 +15,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonStyle = ElevatedButton.styleFrom(
-      backgroundColor: Colors.white,
-      foregroundColor: const Color(0xFF1E1E1E),
-      elevation: 4,
-      shadowColor: Colors.black26,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      textStyle: GoogleFonts.kameron(
-        fontSize: 20,
-        fontWeight: FontWeight.w500,
-      ),
-    );
+  backgroundColor: Colors.white,
+  foregroundColor: const Color(0xFF1E1E1E),
+  elevation: 5,
+  shadowColor: Colors.black26,
+  padding: const EdgeInsets.symmetric(horizontal: 24),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(12),
+  ),
+  textStyle: GoogleFonts.kameron(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+  ),
+);
 
     return Scaffold(
       body: Container(
@@ -54,37 +55,49 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: double.infinity,
-                    height: 54,
-                    child: ElevatedButton.icon(
+                    height: 56,
+                    child: ElevatedButton(
                       style: buttonStyle,
                       onPressed: () {
                         context.pushNamed(AppRoutesNames.alertsMap);
                       },
-                      icon: Image.asset(
-                        _alertsMapIconPath,
-                        width: 17,
-                        height: 16,
-                        fit: BoxFit.contain,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            _alertsMapIconPath,
+                            width: 17,
+                            height: 16,
+                            fit: BoxFit.contain,
+                          ),
+                          const SizedBox(width: 12),
+                          const Text('Alerts Map'),
+                        ],
                       ),
-                      label: const Text('Alerts Map'),
                     ),
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
-                    height: 54,
-                    child: ElevatedButton.icon(
+                    height: 56,
+                    child: ElevatedButton(
                       style: buttonStyle,
                       onPressed: () {
                         context.pushNamed(AppRoutesNames.regionAlerts);
                       },
-                      icon: Image.asset(
-                        _regionAlertsIconPath,
-                        width: 20,
-                        height: 16,
-                        fit: BoxFit.contain,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            _regionAlertsIconPath,
+                            width: 29,
+                            height: 16,
+                            fit: BoxFit.contain,
+                          ),
+                          const SizedBox(width: 12),
+                          const Text('Region Alerts'),
+                        ],
                       ),
-                      label: const Text('Region Alerts'),
                     ),
                   ),
                 ],

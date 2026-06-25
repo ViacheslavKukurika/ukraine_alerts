@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/region_alert_cubit.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/region_alert_state.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/widgets/alert_status_card.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/widgets/region_dropdown.dart';
+
+const String _refreshIconPath = 'assets/images/icons/circular_arrow.png';
 
 class RegionAlertsScreen extends StatelessWidget {
   const RegionAlertsScreen({super.key});
@@ -58,13 +62,45 @@ class RegionAlertsScreen extends StatelessWidget {
             color: Colors.white,
           );
         } else if (state.requestStatus == RequestStatus.failure) {
-          centerContent = Text(
-            state.errorMessage ?? 'Сталася невідома помилка',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-            ),
+          centerContent = Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.cloud_off_rounded,
+                size: 72,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                state.errorMessage ?? 'Сталася невідома помилка',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 20),
+              FilledButton.icon(
+                onPressed: selectedRegion == null
+                    ? null
+                    : () {
+                        context.read<RegionAlertCubit>().selectRegion(
+                          selectedRegion,
+                        );
+                      },
+                style: FilledButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF1E1E1E),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
+                ),
+                icon: const Icon(Icons.refresh),
+                label: const Text('Спробувати ще раз'),
+              ),
+            ],
           );
         } else if (selectedRegion == null ||
             state.airRaidStatus == AirRaidStatus.unknown) {
@@ -84,12 +120,31 @@ class RegionAlertsScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
+            leading: IconButton(
+              tooltip: 'Назад',
+              onPressed: () {
+                context.pop();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 24,
+              ),
+            ),
+            title: Text(
+              'Region Alerts',
+              style: GoogleFonts.kameron(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xFF1E1E1E),
+              ),
+            ),
+            centerTitle: true,
             backgroundColor: appBarColor,
+            foregroundColor: const Color(0xFF1E1E1E),
             animateColor: true,
             elevation: 0,
             scrolledUnderElevation: 0,
             surfaceTintColor: Colors.transparent,
-            title: const Text('Region Alerts'),
             actions: [
               IconButton(
                 tooltip: 'Оновити статус',
@@ -100,7 +155,10 @@ class RegionAlertsScreen extends StatelessWidget {
                           selectedRegion,
                         );
                       },
-                icon: const Icon(Icons.refresh),
+                icon: const ImageIcon(
+                  AssetImage(_refreshIconPath),
+                  size: 20,
+                ),
               ),
             ],
           ),
