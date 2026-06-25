@@ -1,17 +1,16 @@
 /*-------------------------------------------------------------------
-  Репозиторій організовує послідовність:
-  
-  1) API service (запит до бекенду);
-  2) DTO;
-  3) mapper;
-  4) Entity;
+  Repository отримує сирі значення від AlertsApiService
+  і перетворює їх на типи, зрозумілі застосунку:
+
+    "A", "P", "N" → AirRaidStatus;
+
+  рядок статусів областей →
+  Map<Region, AirRaidStatus>.
 -------------------------------------------------------------------*/
 
 import 'package:ukraine_alerts/features/alerts/data/api/alerts_api_service.dart';
-import 'package:ukraine_alerts/features/alerts/data/entities/active_alert.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
-import 'package:ukraine_alerts/features/alerts/data/repositories/active_alert_mapper.dart';
 
 class AlertsRepository {
   AlertsRepository(this._apiService);
@@ -56,30 +55,6 @@ class AlertsRepository {
       'N' => AirRaidStatus.inactive,
       _ => AirRaidStatus.unknown,
     };
-  }
-
-  Future<List<ActiveAlert>> getActiveAlerts() async {
-    final responseDto = await _apiService.getActiveAlerts();
-    final alertDtos = responseDto.alerts ?? [];
-
-    /*-------------------------------------------------------------------
-      Використовуємо Set, бо може бути, наприклад, що API поверне декілька 
-     активних тривог в межах області: район, місто, область. В такому випадку
-     кожен запис може перетворитися на Region.sumy. Set же зберігає
-     лише унікальні значення, автоматично видаляючи дублікати.
-    -------------------------------------------------------------------*/
-
-    final activeRegions = <Region>{};
-
-    for (final alertDto in alertDtos) {
-      final activeAlert = mapAlertDtoToEntity(alertDto);
-
-      if (activeAlert != null) {
-        activeRegions.add(activeAlert.region);
-      }
-    }
-
-    return activeRegions.map((region) => ActiveAlert(region: region)).toList();
   }
 
   Future<Map<Region, AirRaidStatus>> getAirRaidStatusesByOblast() async {

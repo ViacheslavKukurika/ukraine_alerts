@@ -27,39 +27,34 @@ class UkraineAlertsMap extends StatelessWidget {
               fit: BoxFit.contain,
             ),
 
-            for (final entry in regionStatuses.entries)
-              if (entry.value == AirRaidStatus.active ||
-                  entry.value == AirRaidStatus.partial)
-                Positioned.fill(
-                  child: IgnorePointer(
-                    child: AnimatedOpacity(
-                      key: ValueKey(entry.key),
-                      opacity: _opacityFor(entry.value),
-                      duration: const Duration(
-                        milliseconds: 350,
-                      ),
-                      curve: Curves.easeInOut,
-                      child: Image.asset(
-                        entry.key.overlayAssetPath,
-                        fit: BoxFit.contain,
-                        gaplessPlayback: true,
-                        errorBuilder:
-                            (
-                              context,
-                              error,
-                              stackTrace,
-                            ) {
-                              debugPrint(
-                                'Overlay load failed: '
-                                '${entry.key.overlayAssetPath}\n$error',
-                              );
-
-                              return const SizedBox.shrink();
-                            },
-                      ),
+            for (final region in Region.values)
+              Positioned.fill(
+                key: ValueKey(region),
+                child: IgnorePointer(
+                  child: AnimatedOpacity(
+                    opacity: _opacityFor(
+                      regionStatuses[region] ?? AirRaidStatus.unknown,
+                    ),
+                    duration: const Duration(
+                      milliseconds: 350,
+                    ),
+                    curve: Curves.easeInOut,
+                    child: Image.asset(
+                      region.overlayAssetPath,
+                      fit: BoxFit.contain,
+                      gaplessPlayback: true,
+                      errorBuilder:
+                          (
+                            context,
+                            error,
+                            stackTrace,
+                          ) {
+                            return const SizedBox.shrink();
+                          },
                     ),
                   ),
                 ),
+              ),
           ],
         ),
       ),

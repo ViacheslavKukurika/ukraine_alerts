@@ -6,11 +6,13 @@ class RegionDropdown extends StatelessWidget {
   const RegionDropdown({
     this.onSelected,
     this.initialSelection,
+    this.enabled = true,
     super.key,
   });
 
   final ValueChanged<Region?>? onSelected;
   final Region? initialSelection;
+  final bool enabled;
 
   static const String _searchIconPath = 'assets/images/icons/icons_search.png';
 
@@ -28,6 +30,7 @@ class RegionDropdown extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: DropdownMenu<Region>(
+        enabled: enabled,
         // розтягує dropdown до ширини батьківського SizedBox (для центрування):
         expandedInsets: EdgeInsets.zero,
         // щоб список не починався від самого верху, а був більш зручно розташ:

@@ -180,6 +180,7 @@ class RegionAlertsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     RegionDropdown(
+                      enabled: !isLoading,
                       onSelected: (region) {
                         if (region == null) {
                           return;

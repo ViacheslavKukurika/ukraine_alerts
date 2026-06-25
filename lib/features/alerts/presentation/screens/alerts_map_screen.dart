@@ -81,7 +81,7 @@ class AlertsMapScreen extends StatelessWidget {
 
           BlocBuilder<AlertsMapCubit, AlertsMapState>(
             buildWhen: (previous, current) {
-              return previous.regionStatuses != current.regionStatuses;
+              return previous.requestStatus != current.requestStatus;
             },
             builder: (context, state) {
               final isLoading = state.requestStatus == RequestStatus.loading;
@@ -116,7 +116,7 @@ class AlertsMapScreen extends StatelessWidget {
 
           final isInitialLoading =
               state.requestStatus == RequestStatus.initial ||
-              state.requestStatus == RequestStatus.loading && !hasData;
+              (state.requestStatus == RequestStatus.loading && !hasData);
 
           if (isInitialLoading) {
             return const Center(
@@ -291,8 +291,6 @@ class _AlertRegionCard extends StatelessWidget {
 /*-------------------------------------------------------------------
   Фабула:
 
-  AlertsMapState (стан Cubit-у) → activeAlerts (змінна у самому Cubit) → 
-   →  activeRegions (Set регіонів, де є активна повітряна тривога) →
-    → UkraineAlertsMap (наш віджет із картою + оверлеї) → 
-     → AnimatedOpacity для кожної області. 
+  AlertsMapState.regionStatuses → Map<Region, AirRaidStatus> →
+    → UkraineAlertsMap → overlays
 -------------------------------------------------------------------*/

@@ -28,8 +28,8 @@ abstract final class AppRouter {
           final repository = AlertsRepository(apiService);
           return BlocProvider(
             create: (_) => AlertsMapCubit(repository)
-            ..loadAirRaidStatuses()
-            ..startAutoRefresh(),
+              ..loadAirRaidStatuses()
+              ..startAutoRefresh(),
             child: const AlertsMapScreen(),
           );
         },
@@ -57,8 +57,10 @@ abstract final class AppRouter {
   final dio = DioClient.create();
   final apiService = AlertsApiService(dio);
   final repository = AlertsRepository(apiService);
+  Cubit;
+  Screen;
 
-  Потім створюємо вже наш BlocProvide. В цілому спостерігається ланцюг 
+  Потім створюємо вже наш BlocProvider. В цілому спостерігається ланцюг 
  залежностей:
 
   Dio → AlertsApiService → AlertsRepository → RegionAlertCubit → 

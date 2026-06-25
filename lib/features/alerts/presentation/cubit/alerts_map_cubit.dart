@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_state.dart';
@@ -17,7 +16,7 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
     if (state.requestStatus == RequestStatus.loading) {
       return;
     }
-    
+
     emit(
       state.copyWith(
         requestStatus: RequestStatus.loading,
@@ -29,6 +28,10 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
       final regionStatuses = await _alertsRepository
           .getAirRaidStatusesByOblast();
 
+      if (isClosed) {
+        return;
+      }
+
       emit(
         state.copyWith(
           requestStatus: RequestStatus.success,
@@ -36,9 +39,10 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
           clearErrorMessage: true,
         ),
       );
-    } catch (error, stackTrace) {
-      debugPrint('loadAirRaidStatuses failed: $error');
-      debugPrintStack(stackTrace: stackTrace);
+    } catch (_) {
+      if (isClosed) {
+        return;
+      }
 
       emit(
         state.copyWith(

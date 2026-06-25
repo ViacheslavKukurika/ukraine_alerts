@@ -12,6 +12,10 @@ class RegionAlertCubit extends Cubit<RegionAlertState> {
   final AlertsRepository _alertsRepository;
 
   Future<void> selectRegion(Region region) async {
+    // Не запускаємо новий запит, доки не завершився попередній:
+    if (state.requestStatus == RequestStatus.loading) {
+      return;
+    }
     emit(
       state.copyWith(
         selectedRegion: region,
@@ -26,6 +30,10 @@ class RegionAlertCubit extends Cubit<RegionAlertState> {
         region.uid,
       );
 
+      if (isClosed) {
+        return;
+      }
+
       emit(
         state.copyWith(
           selectedRegion: region,
@@ -35,6 +43,9 @@ class RegionAlertCubit extends Cubit<RegionAlertState> {
         ),
       );
     } catch (_) {
+      if (isClosed) {
+        return;
+      }
       emit(
         state.copyWith(
           selectedRegion: region,

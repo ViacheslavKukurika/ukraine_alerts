@@ -16,11 +16,13 @@ class AlertsMapLegend extends StatelessWidget {
           color: _activeColor,
           label: 'Тривога в усьому регіоні',
         ),
+
         SizedBox(height: 12),
         _LegendItem(
           color: _partialColor,
           label: 'Часткова тривога',
         ),
+
         SizedBox(height: 12),
         _LegendItem(
           color: Colors.transparent,

@@ -5,7 +5,6 @@
 
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:ukraine_alerts/features/alerts/data/dto/active_alerts_response_dto.dart';
 
 class AlertsApiService {
   AlertsApiService(this._dio);
@@ -54,21 +53,6 @@ class AlertsApiService {
 "Map<String, dynamic>", тобто Dio підкапотно автоматично перетворює JSON у
 Mapу. 
 -------------------------------------------------------------------*/
-
-  Future<ActiveAlertsResponseDto> getActiveAlerts() async {
-    final response = await _dio.get<Map<String, dynamic>>(
-      '/v1/alerts/active.json',
-    );
-
-    final data = response.data;
-
-    if (data == null) {
-      throw const FormatException(
-        'Active alerts response is empty',
-      );
-    }
-    return ActiveAlertsResponseDto.fromJson(data);
-  }
 
   Future<String> getAirRaidStatusesByOblast() async {
     final response = await _dio.get<String>(

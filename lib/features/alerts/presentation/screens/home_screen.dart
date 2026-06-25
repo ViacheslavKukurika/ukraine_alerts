@@ -15,19 +15,19 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final buttonStyle = ElevatedButton.styleFrom(
-  backgroundColor: Colors.white,
-  foregroundColor: const Color(0xFF1E1E1E),
-  elevation: 5,
-  shadowColor: Colors.black26,
-  padding: const EdgeInsets.symmetric(horizontal: 24),
-  shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(12),
-  ),
-  textStyle: GoogleFonts.kameron(
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
-  ),
-);
+      backgroundColor: Colors.white,
+      foregroundColor: const Color(0xFF1E1E1E),
+      elevation: 5,
+      shadowColor: Colors.black26,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      textStyle: GoogleFonts.kameron(
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+      ),
+    );
 
     return Scaffold(
       body: Container(
