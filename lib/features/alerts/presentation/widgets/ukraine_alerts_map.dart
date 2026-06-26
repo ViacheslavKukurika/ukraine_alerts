@@ -1,3 +1,20 @@
+
+/*-----------------------------------------------------------------------------
+  WIDGET
+  
+  UkraineAlertsMap будує інтерактивну карту України з окремими PNG-overlay для 
+кожного підтримуваного регіону.
+
+  У Stack спочатку розміщується базове зображення карти, а поверх нього 
+створюються overlays для всіх значень Region.values. Overlay не видаляються з
+дерева віджетів при зміні статусу — змінюється лише їхня прозорість через
+AnimatedOpacity.
+
+  Повна тривога має opacity 1, часткова — 0.55, а inactive та unknown — 0. Такий
+підхід забезпечує плавну анімацію як появи, так і зникнення підсвічування.
+InteractiveViewer дозволяє користувачеві масштабувати карту.
+-----------------------------------------------------------------------------*/
+
 import 'package:flutter/material.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';

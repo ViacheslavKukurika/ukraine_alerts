@@ -1,3 +1,19 @@
+
+/*-----------------------------------------------------------------------------
+  RegionAlertsScreen показує статус повітряної тривоги для одного вибраного
+користувачем регіону.
+
+  Екран слухає RegionAlertCubit через BlocBuilder. Користувач вибирає регіон у
+RegionDropdown, після чого Cubit виконує API-запит. Залежно від requestStatus
+центральна частина екрана показує loader, повідомлення про помилку, початкове
+зображення або AlertStatusCard.
+
+  Колір AppBar і градієнт фону залежать від AirRaidStatus. AnimatedContainer
+плавно змінює оформлення між unknown, active, partial та inactive, а 
+AnimatedSwitcher анімує зміну центрального контенту. Під час loading dropdown і
+кнопка оновлення блокуються, щоб не запускати паралельні запити.
+-----------------------------------------------------------------------------*/
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

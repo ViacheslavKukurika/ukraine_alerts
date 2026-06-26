@@ -1,16 +1,22 @@
+
+/*-----------------------------------------------------------------------------
+  RegionAlertState описує повний стан екрана конкретного регіону.
+
+   У ньому зберігаються:
+    1) вибраний користувачем Region;
+    2) поточний стан HTTP-запиту;
+    3) отриманий AirRaidStatus;
+    4) необов'язкове повідомлення про помилку.
+
+  Cubit не змінює поточний State напряму, а створює новий через copyWith і 
+передає його методом emit(). Equatable використовує props, щоб порівнювати стани
+за значеннями їхніх полів.
+-----------------------------------------------------------------------------*/
+
 import 'package:equatable/equatable.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
-
-/*-------------------------------------------------------------------
-  State повна інформаційна картка екрану у певний момент часу. Це як змінна, яку
- контролює і прокидує вниз inherited-widget, але це не просто змінна, а повно-
- цінний об'єкт класу.
-
-    Equatable дозволяє порівнювати State за значеннями полів, а не за адресою
-  об’єкта.
--------------------------------------------------------------------*/
 
 class RegionAlertState extends Equatable {
   const RegionAlertState({
@@ -48,10 +54,6 @@ class RegionAlertState extends Equatable {
     );
   }
 
-  /*-------------------------------------------------------------------
-    Equatable використовує props для порівняння двох об'єктів стану за
-  значеннями їхніх полів.
-  -------------------------------------------------------------------*/
   @override
   List<Object?> get props => [
     selectedRegion,

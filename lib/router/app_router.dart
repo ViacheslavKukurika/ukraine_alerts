@@ -1,3 +1,19 @@
+
+/*-----------------------------------------------------------------------------
+    AppRouter описує навігацію між екранами та створює залежності, необхідні
+  для роботи функціональності повітряних тривог.
+
+  Для HomeScreen додаткові залежності не потрібні. Для AlertsMapScreen і
+  RegionAlertsScreen створюється послідовний ланцюг:
+
+    Dio → AlertsApiService → AlertsRepository → Cubit → Screen.
+
+    Dio виконує HTTP-запити, API Service працює з конкретними endpoint,
+  Repository перетворює сирі відповіді на моделі застосунку, а Cubit керує
+  станом відповідного екрана. BlocProvider передає створений Cubit вниз по
+  дереву віджетів і автоматично закриває його після виходу з маршруту.
+-----------------------------------------------------------------------------*/
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ukraine_alerts/core/network/dio_client.dart';
@@ -50,20 +66,3 @@ abstract final class AppRouter {
     ],
   );
 }
-
-/*
-  Для екрану регіону тут, у app_router, ми встановлюємо залежності:
-
-  final dio = DioClient.create();
-  final apiService = AlertsApiService(dio);
-  final repository = AlertsRepository(apiService);
-  Cubit;
-  Screen;
-
-  Потім створюємо вже наш BlocProvider. В цілому спостерігається ланцюг 
- залежностей:
-
-  Dio → AlertsApiService → AlertsRepository → RegionAlertCubit → 
-    → RegionAlertsScreen.
-  Спостерігається певна модульність, де кожен рівень відповідає за своє.
-*/

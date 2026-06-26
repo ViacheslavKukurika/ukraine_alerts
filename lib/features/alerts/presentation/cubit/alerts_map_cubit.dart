@@ -1,5 +1,17 @@
-import 'dart:async';
 
+/*-----------------------------------------------------------------------------
+  AlertsMapCubit керує станом екрана загальної карти повітряних тривог. Cubit
+запускає завантаження статусів усіх регіонів через Repository, emit-ить loading,
+success або failure та зберігає отриману Map<Region, AirRaidStatus> у
+AlertsMapState.
+
+  Додатково Cubit запускає автоматичне оновлення карти раз на хвилину. Захист
+від повторного запиту не дозволяє почати нове завантаження, поки попереднє ще 
+не завершилося. Під час закриття Cubit таймер скасовується, щоб після виходу з
+екрана не виконувалися зайві запити.
+-----------------------------------------------------------------------------*/
+
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_state.dart';
