@@ -1,4 +1,3 @@
-
 /*-----------------------------------------------------------------------------
   AlertsMapScreen відображає загальний стан повітряних тривог в Україні.
 
@@ -20,24 +19,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
-import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_cubit.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_state.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
+import 'package:ukraine_alerts/features/alerts/presentation/widgets/alert_region_card.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/widgets/alerts_map_legend.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/widgets/ukraine_alerts_map.dart';
 
-// Дані не у класі, щоб кольори не дублювати в різних частинах файлу
-
-const Color _alertsMapAppBarColor = Color(0xFFB3DFF7);
-const Color _alertsMapBackgroundColor = Color(0xFFA0D6F5);
-const Color _alertCardColor = Color(0xFFC4E6F9);
-
-const String _alertIconPath = 'assets/images/icons/alert_triangle.png';
-const String _refreshIconPath = 'assets/images/icons/circular_arrow.png';
-
 class AlertsMapScreen extends StatelessWidget {
   const AlertsMapScreen({super.key});
+
+  static const Color _alertsMapAppBarColor = Color(0xFFB3DFF7);
+  static const Color _alertsMapBackgroundColor = Color(0xFFA0D6F5);
+  static const String _refreshIconPath =
+      'assets/images/icons/circular_arrow.png';
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +139,7 @@ class AlertsMapScreen extends StatelessWidget {
           if (state.requestStatus == RequestStatus.failure && !hasData) {
             return Center(
               child: Padding(
-                padding: EdgeInsets.all(24),
+                padding: const EdgeInsets.all(24),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -215,7 +210,7 @@ class AlertsMapScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final entry = alertEntries[index];
 
-                      return _AlertRegionCard(
+                      return AlertRegionCard(
                         region: entry.key,
                         status: entry.value,
                       );
@@ -225,81 +220,6 @@ class AlertsMapScreen extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class _AlertRegionCard extends StatelessWidget {
-  const _AlertRegionCard({
-    required this.region,
-    required this.status,
-  });
-
-  final Region region;
-  final AirRaidStatus status;
-
-  @override
-  Widget build(BuildContext context) {
-    final isFullAlert = status == AirRaidStatus.active;
-
-    final statusText = isFullAlert
-        ? 'Повітряна тривога в усьому регіоні'
-        : 'Часткова повітряна тривога';
-
-    final statusColor = isFullAlert
-        ? Theme.of(context).colorScheme.error
-        : Colors.orange.shade800;
-
-    return Card(
-      color: _alertCardColor,
-      surfaceTintColor: Colors.transparent,
-      elevation: 4,
-      shadowColor: Colors.black26,
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 8,
-        ),
-        leading: SizedBox(
-          width: 42,
-          height: 42,
-          child: Center(
-            child: Image.asset(
-              _alertIconPath,
-              width: 32,
-              height: 32,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) {
-                return Icon(
-                  Icons.warning_amber_rounded,
-                  color: statusColor,
-                  size: 30,
-                );
-              },
-            ),
-          ),
-        ),
-        title: Text(
-          region.label,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 4),
-          child: Text(
-            statusText,
-            style: TextStyle(
-              color: statusColor,
-            ),
-          ),
-        ),
       ),
     );
   }

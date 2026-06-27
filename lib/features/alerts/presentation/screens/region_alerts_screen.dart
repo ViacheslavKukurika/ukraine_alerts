@@ -1,4 +1,3 @@
-
 /*-----------------------------------------------------------------------------
   RegionAlertsScreen показує статус повітряної тривоги для одного вибраного
 користувачем регіону.
@@ -25,10 +24,11 @@ import 'package:ukraine_alerts/features/alerts/presentation/models/request_statu
 import 'package:ukraine_alerts/features/alerts/presentation/widgets/alert_status_card.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/widgets/region_dropdown.dart';
 
-const String _refreshIconPath = 'assets/images/icons/circular_arrow.png';
-
 class RegionAlertsScreen extends StatelessWidget {
   const RegionAlertsScreen({super.key});
+
+  static const String _refreshIconPath =
+      'assets/images/icons/circular_arrow.png';
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +201,6 @@ class RegionAlertsScreen extends StatelessWidget {
                         if (region == null) {
                           return;
                         }
-
                         context.read<RegionAlertCubit>().selectRegion(region);
                       },
                     ),
