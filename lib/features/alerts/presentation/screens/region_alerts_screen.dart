@@ -44,32 +44,7 @@ class RegionAlertsScreen extends StatelessWidget {
           AirRaidStatus.partial => const Color(0xFFFFCA6A),
         };
 
-        final gradientColors = switch (state.airRaidStatus) {
-          AirRaidStatus.active => const [
-            Color(0xFFA20000),
-            Color(0xFFAB0404),
-            Color(0xFFD71A1A),
-            Color(0xFFFD2D2D),
-          ],
-          AirRaidStatus.inactive => const [
-            Color(0xFF01A558),
-            Color(0xFF0AAB59),
-            Color(0xFF46D661),
-            Color(0xFF77FA67),
-          ],
-          AirRaidStatus.unknown => const [
-            Color(0xFF84CAF2),
-            Color(0xFF8BCEF3),
-            Color(0xFF9DD5F6),
-            Color(0xFFA9DAF7),
-          ],
-          AirRaidStatus.partial => const [
-            Color(0xFFFFF3CD),
-            Color(0xFFFFE69C),
-            Color(0xFFFFD36A),
-            Color(0xFFFFCA6A),
-          ],
-        };
+        final gradientColors = _getGradientColors(state.airRaidStatus);
 
         final Widget centerContent;
 
@@ -223,5 +198,34 @@ class RegionAlertsScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<Color> _getGradientColors(AirRaidStatus status) {
+    return switch (status) {
+      AirRaidStatus.active => const [
+        Color(0xFFA20000),
+        Color(0xFFAB0404),
+        Color(0xFFD71A1A),
+        Color(0xFFFD2D2D),
+      ],
+      AirRaidStatus.inactive => const [
+        Color(0xFF01A558),
+        Color(0xFF0AAB59),
+        Color(0xFF46D661),
+        Color(0xFF77FA67),
+      ],
+      AirRaidStatus.unknown => const [
+        Color(0xFF84CAF2),
+        Color(0xFF8BCEF3),
+        Color(0xFF9DD5F6),
+        Color(0xFFA9DAF7),
+      ],
+      AirRaidStatus.partial => const [
+        Color(0xFFFFF3CD),
+        Color(0xFFFFE69C),
+        Color(0xFFFFD36A),
+        Color(0xFFFFCA6A),
+      ],
+    };
   }
 }

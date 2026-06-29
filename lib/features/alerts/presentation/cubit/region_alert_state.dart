@@ -1,4 +1,3 @@
-
 /*-----------------------------------------------------------------------------
   RegionAlertState описує повний стан екрана конкретного регіону.
 
@@ -36,6 +35,8 @@ class RegionAlertState extends Equatable {
   final RequestStatus requestStatus;
   final AirRaidStatus airRaidStatus;
   final String? errorMessage;
+
+  bool get hasSelectedRegion => selectedRegion != null;
 
   RegionAlertState copyWith({
     Region? selectedRegion,

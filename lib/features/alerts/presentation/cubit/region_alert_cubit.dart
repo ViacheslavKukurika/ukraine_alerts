@@ -1,4 +1,3 @@
-
 /*-----------------------------------------------------------------------------
   RegionAlertCubit керує вибором одного регіону та завантаженням його  поточного
 статусу повітряної тривоги.
@@ -12,14 +11,14 @@
 запуску кількох запитів та конфлікту їхніх результатів.
 -----------------------------------------------------------------------------*/
 
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ukraine_alerts/core/cubit/safe_cubit.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/air_raid_status.dart';
 import 'package:ukraine_alerts/features/alerts/data/entities/region.dart';
 import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/region_alert_state.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
 
-class RegionAlertCubit extends Cubit<RegionAlertState> {
+class RegionAlertCubit extends  SafeCubit<RegionAlertState> {
   RegionAlertCubit(this._alertsRepository)
     : super(const RegionAlertState.initial());
 
@@ -44,11 +43,7 @@ class RegionAlertCubit extends Cubit<RegionAlertState> {
         region.uid,
       );
 
-      if (isClosed) {
-        return;
-      }
-
-      emit(
+      safeEmit(
         state.copyWith(
           selectedRegion: region,
           requestStatus: RequestStatus.success,
@@ -57,10 +52,7 @@ class RegionAlertCubit extends Cubit<RegionAlertState> {
         ),
       );
     } catch (_) {
-      if (isClosed) {
-        return;
-      }
-      emit(
+      safeEmit(
         state.copyWith(
           selectedRegion: region,
           requestStatus: RequestStatus.failure,

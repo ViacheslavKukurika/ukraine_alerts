@@ -1,4 +1,3 @@
-
 /*-----------------------------------------------------------------------------
   AlertsMapCubit керує станом екрана загальної карти повітряних тривог. Cubit
 запускає завантаження статусів усіх регіонів через Repository, emit-ить loading,
@@ -12,12 +11,12 @@ AlertsMapState.
 -----------------------------------------------------------------------------*/
 
 import 'dart:async';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ukraine_alerts/core/cubit/safe_cubit.dart';
 import 'package:ukraine_alerts/features/alerts/data/repositories/alerts_repository.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/cubit/alerts_map_state.dart';
 import 'package:ukraine_alerts/features/alerts/presentation/models/request_status.dart';
 
-class AlertsMapCubit extends Cubit<AlertsMapState> {
+class AlertsMapCubit extends SafeCubit<AlertsMapState> {
   AlertsMapCubit(this._alertsRepository)
     : super(const AlertsMapState.initial());
 
@@ -40,11 +39,7 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
       final regionStatuses = await _alertsRepository
           .getAirRaidStatusesByOblast();
 
-      if (isClosed) {
-        return;
-      }
-
-      emit(
+      safeEmit(
         state.copyWith(
           requestStatus: RequestStatus.success,
           regionStatuses: Map.unmodifiable(regionStatuses),
@@ -52,11 +47,7 @@ class AlertsMapCubit extends Cubit<AlertsMapState> {
         ),
       );
     } catch (_) {
-      if (isClosed) {
-        return;
-      }
-
-      emit(
+      safeEmit(
         state.copyWith(
           requestStatus: RequestStatus.failure,
           errorMessage: 'Не вдалося завантажити карту тривог',

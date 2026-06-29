@@ -126,11 +126,7 @@ class AlertsMapScreen extends StatelessWidget {
         builder: (context, state) {
           final hasData = state.regionStatuses.isNotEmpty;
 
-          final isInitialLoading =
-              state.requestStatus == RequestStatus.initial ||
-              (state.requestStatus == RequestStatus.loading && !hasData);
-
-          if (isInitialLoading) {
+          if (state.isInitialLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );

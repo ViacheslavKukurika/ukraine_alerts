@@ -33,6 +33,12 @@ class AlertsMapState extends Equatable {
   final Map<Region, AirRaidStatus> regionStatuses;
   final String? errorMessage;
 
+  bool get hasData => regionStatuses.isNotEmpty;
+
+  bool get isInitialLoading =>
+    requestStatus == RequestStatus.initial ||
+    (requestStatus == RequestStatus.loading && !hasData);
+
   // Метод для отримання статусу тривоги обраного регіону із мапи:
 
   AirRaidStatus statusFor(Region region) {
